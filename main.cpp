@@ -22,7 +22,7 @@ vector<int> ParseLine(string line) {
   return parsedLine;
 }
 
-void ReadBoardFile(string fileName) {
+vector<vector<int>> ReadBoardFile(string fileName) {
   ifstream inputFile;
   inputFile.open(fileName);
   vector<vector<int>> board = {};
@@ -33,6 +33,7 @@ void ReadBoardFile(string fileName) {
       board.push_back(pl);
     }
   }
+  return board;
 }
 
 void PrintBoard(vector<vector<int>> board) {
@@ -44,15 +45,8 @@ void PrintBoard(vector<vector<int>> board) {
   }
 }
 
-#include "test.cpp"
-
 int main() {
-  ReadBoardFile("1.board");
-  TestParseLine();
-  // vector<vector<int>> board = {{0, 1, 0, 0, 0, 0},
-  //                              {0, 1, 0, 0, 0, 0},
-  //                              {0, 1, 0, 0, 0, 0},
-  //                              {0, 1, 0, 0, 0, 0},
-  //                              {0, 0, 0, 0, 1, 0}};
-  // PrintBoard(board);
+   
+  vector<vector<int>> board = ReadBoardFile("1.board");
+  PrintBoard(board);
 }
