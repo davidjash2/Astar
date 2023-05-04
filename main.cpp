@@ -1,6 +1,14 @@
-#include<iostream>
+#include <iostream>
+#include <vector>
+using std::vector;
 using std::cout;
 
-int main () {
+
+int main() {
+  vector<vector<int>> board = {{0, 1, 0, 0, 0, 0},
+                               {0, 1, 0, 0, 0, 0},
+                               {0, 1, 0, 0, 0, 0},
+                               {0, 1, 0, 0, 0, 0},
+                               {0, 0, 0, 0, 1, 0}};
   cout << "hello\n";
 }
