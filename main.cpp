@@ -20,7 +20,7 @@ vector<int> ParseLine(string line) {
     parsedLine.push_back(n);
   }
   return parsedLine;
-} 
+}
 
 void ReadBoardFile(string fileName) {
   ifstream inputFile;
