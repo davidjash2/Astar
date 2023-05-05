@@ -59,8 +59,15 @@ void PrintBoard(vector<vector<State>> board) {
   }
 }
 
+vector<vector<State>> search(vector<vector<State>> board, int start[2], int goal[2]) {
+  vector<vector<State>> path;
+  return path;
+}
+
 int main() {
-   
+  int start[2]{0, 0};
+  int goal[2]{4, 5};
   vector<vector<State>> board = ReadBoardFile("1.board");
-  PrintBoard(board);
+  auto solution = search(board, start, goal);
+  PrintBoard(solution);
 }
