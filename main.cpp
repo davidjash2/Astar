@@ -9,37 +9,51 @@ using std::ifstream;
 using std::string;
 using std::istringstream;
 
-vector<int> ParseLine(string line) {
-  vector<int> parsedLine = {};
+
+enum class State {kEmpty, kObstacle};
+
+string CellString(State cell) {
+  switch (cell) {
+    case State::kObstacle: return "⛰️ ";
+    default: return "0 ";
+  }
+}
+
+vector<State> ParseLine(string line) {
+  vector<State> parsedLine = {};
   istringstream my_stream(line);
 
   char c;
   int n;
 
   while (my_stream >> n >> c) {
-    parsedLine.push_back(n);
+    if (n==1) {
+      parsedLine.push_back(State::kObstacle);
+    } else {
+      parsedLine.push_back(State::kEmpty);
+    }
   }
   return parsedLine;
 }
 
-vector<vector<int>> ReadBoardFile(string fileName) {
+vector<vector<State>> ReadBoardFile(string fileName) {
   ifstream inputFile;
   inputFile.open(fileName);
-  vector<vector<int>> board = {};
+  vector<vector<State>> board = {};
   if (inputFile) {
     string line;
     while(getline(inputFile, line)){
-      vector<int> pl = ParseLine(line);
+      vector<State> pl = ParseLine(line);
       board.push_back(pl);
     }
   }
   return board;
 }
 
-void PrintBoard(vector<vector<int>> board) {
-  for (vector<int> r: board) {
-    for (int c: r) {
-      cout << c;
+void PrintBoard(vector<vector<State>> board) {
+  for (vector<State> r: board) {
+    for (State c: r) {
+      cout << CellString(c);
     }
     cout << "\n";
   }
@@ -47,6 +61,6 @@ void PrintBoard(vector<vector<int>> board) {
 
 int main() {
    
-  vector<vector<int>> board = ReadBoardFile("1.board");
+  vector<vector<State>> board = ReadBoardFile("1.board");
   PrintBoard(board);
 }
