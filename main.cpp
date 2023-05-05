@@ -64,6 +64,10 @@ vector<vector<State>> search(vector<vector<State>> board, int start[2], int goal
   return path;
 }
 
+int Heuristic(int x1, int y1, int x2, int y2) {
+	return abs(x2-x1) + abs(y2-y1);
+}
+
 int main() {
   int start[2]{0, 0};
   int goal[2]{4, 5};
