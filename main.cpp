@@ -10,7 +10,7 @@ using std::string;
 using std::istringstream;
 
 
-enum class State {kEmpty, kObstacle};
+enum class State {kEmpty, kObstacle, kClose};
 
 string CellString(State cell) {
   switch (cell) {
@@ -66,6 +66,12 @@ vector<vector<State>> search(vector<vector<State>> board, int start[2], int goal
 
 int Heuristic(int x1, int y1, int x2, int y2) {
 	return abs(x2-x1) + abs(y2-y1);
+}
+
+void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &open, vector<vector<State>> &grid) {
+  vector<int> v {x, y, g, h};
+  open.push_back(v);
+  grid[x][y] = State::kClosed;
 }
 
 int main() {
