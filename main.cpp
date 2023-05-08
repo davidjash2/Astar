@@ -59,6 +59,16 @@ void PrintBoard(vector<vector<State>> board) {
   }
 }
 
+int Heuristic(int x1, int y1, int x2, int y2) {
+	return abs(x2-x1) + abs(y2-y1);
+}
+
+void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &path, vector<vector<State>> &grid) {
+  vector<int> v {x, y, g, h};
+  path.push_back(v);
+  grid[x][y] = State::kClosed;
+}
+
 vector<vector<State>> search(vector<vector<State>> board, int start[2], int goal[2]) {
   vector<vector<int>> path;
   int x = start[0];
@@ -69,14 +79,10 @@ vector<vector<State>> search(vector<vector<State>> board, int start[2], int goal
   return std::vector<vector<State>>{};
 }
 
-int Heuristic(int x1, int y1, int x2, int y2) {
-	return abs(x2-x1) + abs(y2-y1);
-}
-
-void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &path, vector<vector<State>> &grid) {
-  vector<int> v {x, y, g, h};
-  path.push_back(v);
-  grid[x][y] = State::kClosed;
+bool Compare(vector<int> v1, vector<int> v2) {
+	int f1 = v1[2]+v1[3];
+  int f2 = v2[2]+v2[3];
+	return f1 > f2;
 }
 
 int main() {
