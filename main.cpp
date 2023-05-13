@@ -12,12 +12,14 @@ using std::string;
 using std::istringstream;
 
 
-enum class State {kEmpty, kObstacle, kClosed, kPath};
+enum class State {kEmpty, kObstacle, kClosed, kPath, kStart, kFinish};
 
 string CellString(State cell) {
   switch (cell) {
     case State::kObstacle: return "⛰️ ";
     case State::kPath: return "🚗   ";
+    case State::kStart: return "🚦   ";
+    case State::kFinish: return "🏁   ";
     default: return "0 ";
   }
 }
@@ -126,6 +128,8 @@ vector<vector<State>> search(vector<vector<State>> board, int start[2], int goal
     board[x][y] = State::kPath;
 
     if (x == goal[0] && y == goal[1]) {
+      board[start[0]][start[1]] = State::kStart;
+      board[goal[0]][goal[1]] = State::kFinish;
       return board;
     }
   }
