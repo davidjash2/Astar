@@ -111,36 +111,38 @@ void CellSort(vector<vector<int>> *v) {
   sort(v->begin(), v->end(), Compare);
 }
 
-vector<vector<State>> search(vector<vector<State>> board, int start[2], int goal[2]) {
-  vector<vector<int>> open;
-  int x = start[0];
-  int y = start[1];
+vector<vector<State>> Search(vector<vector<State>> board, int init[2], int goal[2]) {
+  vector<vector<int>> open {};
+  int x = init[0];
+  int y = init[1];
   int g = 0;
   int h = Heuristic(x, y, goal[0], goal[1]);
   AddToOpen(x, y, g, h, open, board);
   
   while (open.size() > 0) {
     CellSort(&open); 
-    vector<int> current = open.back();
-    int x = current[0];
-    int y = current[1];
-
+    auto current = open.back();
+    open.pop_back();
+    x = current[0];
+    y = current[1];
     board[x][y] = State::kPath;
 
     if (x == goal[0] && y == goal[1]) {
-      board[start[0]][start[1]] = State::kStart;
+      board[init[0]][init[1]] = State::kStart;
       board[goal[0]][goal[1]] = State::kFinish;
       return board;
     }
+    ExpandNeighbors(current, goal, open, board);
   }
 
+  cout << "No path found!" << "\n";
   return std::vector<vector<State>>{};
 }
 
 int main() {
-  int start[2]{0, 0};
+  int init[2]{0, 0};
   int goal[2]{4, 5};
-  vector<vector<State>> board = ReadBoardFile("1.board");
-  auto solution = search(board, start, goal);
+  auto board = ReadBoardFile("1.board");
+  auto solution = Search(board, init, goal);
   PrintBoard(solution);
 }
