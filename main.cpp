@@ -3,18 +3,21 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <algorithm>
 using std::vector;
 using std::cout;
+using std::count;
 using std::ifstream;
 using std::string;
 using std::istringstream;
 
 
-enum class State {kEmpty, kObstacle, kClosed};
+enum class State {kEmpty, kObstacle, kClosed, kPath};
 
 string CellString(State cell) {
   switch (cell) {
     case State::kObstacle: return "⛰️ ";
+    case State::kPath: return "🚗   ";
     default: return "0 ";
   }
 }
@@ -69,13 +72,36 @@ void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &path, vector<vec
   grid[x][y] = State::kClosed;
 }
 
+bool CheckValidCell(int x, int y, vector<vector<State>> grid) {
+  bool on_grid_x = (x >= 0 && x < grid.size());
+  bool on_grid_y = (y >= 0 && y < grid[0].size());
+  if (on_grid_x && on_grid_y) {
+    return grid[x][y] == State::kEmpty;
+  }
+  return false;
+}
+
 vector<vector<State>> search(vector<vector<State>> board, int start[2], int goal[2]) {
-  vector<vector<int>> path;
+  vector<vector<int>> open;
   int x = start[0];
   int y = start[1];
   int g = 0;
   int h = Heuristic(x, y, goal[0], goal[1]);
-  AddToOpen(x, y, g, h, path, board);
+  AddToOpen(x, y, g, h, open, board);
+  
+  while (open.size() > 0) {
+    CellSort(open);
+    vector<int> current = open.back();
+    int x = current[0];
+    int y = current[1];
+
+    board[x][y] = State::kPath;
+
+    if (x == goal[0] && y == goal[1]) {
+      return board;
+    }
+  }
+
   return std::vector<vector<State>>{};
 }
 
