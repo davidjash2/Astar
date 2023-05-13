@@ -81,6 +81,34 @@ bool CheckValidCell(int x, int y, vector<vector<State>> grid) {
   return false;
 }
 
+
+void ExpandNeighbors(vector<int> current, int* goal, vector<vector<int>> &open, vector<vector<State>> &grid) {
+  int current_x = current[0];
+  int current_y = current[1];
+  int current_g = current[2];
+  
+  const int delta[4][2]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+  for (int i = 0; i < 4; i++) {
+    int possible_x = current_x + delta[i][0];
+    int possible_y = current_y + delta[i][1];
+    if (CheckValidCell(possible_x, possible_y, grid)) {
+      int updated_g = current_g + 1;
+      int h = Heuristic(possible_x, possible_y, goal[0],goal[1]);
+      AddToOpen(possible_x, possible_y, updated_g, h, open, grid);
+    }
+  }
+}
+
+bool Compare(vector<int> v1, vector<int> v2) {
+	int f1 = v1[2]+v1[3];
+  int f2 = v2[2]+v2[3];
+	return f1 > f2;
+}
+
+void CellSort(vector<vector<int>> *v) {
+  sort(v->begin(), v->end(), Compare);
+}
+
 vector<vector<State>> search(vector<vector<State>> board, int start[2], int goal[2]) {
   vector<vector<int>> open;
   int x = start[0];
@@ -90,7 +118,7 @@ vector<vector<State>> search(vector<vector<State>> board, int start[2], int goal
   AddToOpen(x, y, g, h, open, board);
   
   while (open.size() > 0) {
-    CellSort(open);
+    CellSort(&open); 
     vector<int> current = open.back();
     int x = current[0];
     int y = current[1];
@@ -103,12 +131,6 @@ vector<vector<State>> search(vector<vector<State>> board, int start[2], int goal
   }
 
   return std::vector<vector<State>>{};
-}
-
-bool Compare(vector<int> v1, vector<int> v2) {
-	int f1 = v1[2]+v1[3];
-  int f2 = v2[2]+v2[3];
-	return f1 > f2;
 }
 
 int main() {
